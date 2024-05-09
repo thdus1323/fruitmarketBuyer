@@ -11,4 +11,10 @@ public class BuyerRequest {
         private String buyerPw;
         private String buyerEmail;
     }
+
+    @Data
+    public class LoginDTO {
+        private String buyerName;
+        private String buyerPw;
+    }
 }

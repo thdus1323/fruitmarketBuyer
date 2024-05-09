@@ -26,4 +26,13 @@ insert into buyer_tb(buyer_name, buyer_pw, buyer_email, created_at) values(?,?,?
     public String joinForm(){
         return "buyer/join-form";
     }
+
+    //로그인
+    public Buyer login(BuyerRequest.LoginDTO reqDTO) {
+        Query query = em.createNativeQuery("select * from buyer_tb where buyer_name=? and buyer_pw=?", Buyer.class);
+        query.setParameter(1, reqDTO.getBuyerName());
+        query.setParameter(2, reqDTO.getBuyerPw());
+        Buyer sessionBuyer = (Buyer) query.getSingleResult();
+        return sessionBuyer;
+    }
 }
