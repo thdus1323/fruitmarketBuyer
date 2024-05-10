@@ -16,7 +16,7 @@ public class PurchaseRepository {
     public Purchase findByProductId(Integer productId) {
         Query query = em.createNativeQuery("select * from purchase_tb where product_id=?", Purchase.class);
         query.setParameter(1, productId);
-        return (Purchase)query.getSingleResult();
+        return (Purchase) query.getSingleResult();
     }
 
     public void save(Integer buyerId, String buyerName, PurchaseRequest.SaveDTO reqDTO) {
@@ -39,10 +39,10 @@ public class PurchaseRepository {
 
     //구매수량수정하기
     public void updateByBuyerId(Integer buyerId, PurchaseRequest.UpdateDTO reqDTO) {
-    Query query = em.createNativeQuery("update purchase_tb set purchase_qty=? where buyer_id=?");
-    query.setParameter(1, reqDTO.getPurchaseQty());
-    query.setParameter(2, buyerId);
-    query.executeUpdate();
+        Query query = em.createNativeQuery("update purchase_tb set purchase_qty=? where buyer_id=?");
+        query.setParameter(1, reqDTO.getPurchaseQty());
+        query.setParameter(2, buyerId);
+        query.executeUpdate();
     }
 
     //상품구매목록 조회
@@ -51,9 +51,21 @@ public class PurchaseRepository {
                 select * from purchase_tb where buyer_id = ?
                 """;
 
-        Query query = em.createNativeQuery(q,Purchase.class);
-        query.setParameter(1,buyerId);
+        Query query = em.createNativeQuery(q, Purchase.class);
+        query.setParameter(1, buyerId);
         List<Purchase> purchaseList = query.getResultList();
         return purchaseList;
     }
+
+    //내 구매목록, 상품재고 수량 변경
+    public void updateQty(PurchaseRequest.SaveDTO reqDTO) {
+        String q = """
+                update product_tb set product_qty = product_qty - ? where product_id = ?
+                """;
+        Query query = em.createNativeQuery(q);
+        query.setParameter(1, reqDTO.getPurQty());
+        query.setParameter(2, reqDTO.getProductId());
+        query.executeUpdate();
+    }
+
 }

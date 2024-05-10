@@ -24,6 +24,7 @@ public class PurchaseService {
     public void savePurchase(Integer buyerId, PurchaseRequest.SaveDTO reqDTO){
         Buyer buyer = buyerRepository.findByBuyerId(buyerId);
         purchaseRepository.save(buyerId, buyer.getBuyerName(), reqDTO);
+        purchaseRepository.updateQty(reqDTO);
     }
 
     //구매수량 수정하기
