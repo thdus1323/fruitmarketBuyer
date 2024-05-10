@@ -13,13 +13,13 @@ import java.util.List;
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final BuyerRepository buyerRepository;
-    //구매하기?
+    //구매결정?
     public Purchase findByproductId(Integer productId) {
         Purchase purchase = purchaseRepository.findByProductId(productId);
         return purchase;
     }
 
-    //구매결정하기?
+    //구매하기
     @Transactional
     public void savePurchase(Integer buyerId, PurchaseRequest.SaveDTO reqDTO){
         Buyer buyer = buyerRepository.findByBuyerId(buyerId);
