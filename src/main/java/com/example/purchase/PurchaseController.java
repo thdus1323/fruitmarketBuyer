@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class PurchaseController {
@@ -40,5 +42,13 @@ public class PurchaseController {
     public String update(@PathVariable Integer purchaseId, PurchaseRequest.UpdateDTO reqDTO){
         purchaseService.changePurQty(purchaseId, reqDTO);
         return "redirect:/";
+    }
+
+    @GetMapping("/purchase/list")
+    public String list(HttpServletRequest request, HttpSession session) {
+        Buyer sessionBuyer = (Buyer) session.getAttribute("sessionBuyer");
+        List<Purchase> purchaseList = purchaseService.getPurchaseList(sessionBuyer.getBuyerId());
+        request.setAttribute("purchaseList", purchaseList);
+        return "purchase/list";
     }
 }

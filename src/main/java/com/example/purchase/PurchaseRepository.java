@@ -5,6 +5,8 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class PurchaseRepository {
@@ -41,5 +43,17 @@ public class PurchaseRepository {
     query.setParameter(1, reqDTO.getPurchaseQty());
     query.setParameter(2, buyerId);
     query.executeUpdate();
+    }
+
+    //상품구매목록 조회
+    public List<Purchase> findByBuyerId(Integer buyerId) {
+        String q = """
+                select * from purchase_tb where buyer_id = ?
+                """;
+
+        Query query = em.createNativeQuery(q,Purchase.class);
+        query.setParameter(1,buyerId);
+        List<Purchase> purchaseList = query.getResultList();
+        return purchaseList;
     }
 }

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class PurchaseService {
@@ -27,5 +29,11 @@ public class PurchaseService {
     //구매수량 수정하기
     public void changePurQty(Integer buyerId, PurchaseRequest.UpdateDTO reqDTO) {
         purchaseRepository.updateByBuyerId(buyerId,reqDTO);
+    }
+
+    //내 구매목록 보기
+    public List<Purchase> getPurchaseList(Integer buyerId) {
+        List<Purchase> purchaseList = purchaseRepository.findByBuyerId(buyerId);
+        return purchaseList;
     }
 }
