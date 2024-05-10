@@ -34,4 +34,11 @@ public class PurchaseController {
         purchaseService.savePurchase(sessionBuyer.getBuyerId(), reqDTO);
         return "redirect:/purchase/list";
     }
+
+    //구매수량 수정하기
+    @PostMapping("/purchase/{purchaseId}/update")
+    public String update(@PathVariable Integer purchaseId, PurchaseRequest.UpdateDTO reqDTO){
+        purchaseService.changePurQty(purchaseId, reqDTO);
+        return "redirect:/";
+    }
 }

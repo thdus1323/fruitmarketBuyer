@@ -34,4 +34,12 @@ public class PurchaseRepository {
 
         query.executeUpdate();
     }
+
+    //구매수량수정하기
+    public void updateByBuyerId(Integer buyerId, PurchaseRequest.UpdateDTO reqDTO) {
+    Query query = em.createNativeQuery("update purchase_tb set purchase_qty=? where buyer_id=?");
+    query.setParameter(1, reqDTO.getPurchaseQty());
+    query.setParameter(2, buyerId);
+    query.executeUpdate();
+    }
 }

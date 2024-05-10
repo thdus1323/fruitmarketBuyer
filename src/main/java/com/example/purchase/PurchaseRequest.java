@@ -13,4 +13,9 @@ public class PurchaseRequest {
         private Integer purQty;
 
     }
+
+    @Data
+    public static class UpdateDTO {
+        private Integer purchaseQty;
+    }
 }

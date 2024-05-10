@@ -17,10 +17,15 @@ public class PurchaseService {
         return purchase;
     }
 
-    //구매하기?
+    //구매결정하기?
     @Transactional
     public void savePurchase(Integer buyerId, PurchaseRequest.SaveDTO reqDTO){
         Buyer buyer = buyerRepository.findByBuyerId(buyerId);
         purchaseRepository.save(buyerId, buyer.getBuyerName(), reqDTO);
+    }
+
+    //구매수량 수정하기
+    public void changePurQty(Integer buyerId, PurchaseRequest.UpdateDTO reqDTO) {
+        purchaseRepository.updateByBuyerId(buyerId,reqDTO);
     }
 }

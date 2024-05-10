@@ -15,18 +15,14 @@ public class BuyerRepository {
     //회원가입
     public void join(BuyerRequest.JoinDTO reqDTO) {
         Query query = em.createNativeQuery("""
-insert into buyer_tb(buyer_name, buyer_pw, buyer_email, created_at) values(?,?,?,now())
-""");
+                insert into buyer_tb(buyer_name, buyer_pw, buyer_email, created_at) values(?,?,?,now())
+                """);
         query.setParameter(1, reqDTO.getBuyerName());
         query.setParameter(2, reqDTO.getBuyerPw());
         query.setParameter(3, reqDTO.getBuyerEmail());
         query.executeUpdate();
     }
 
-    @GetMapping("/join-form")
-    public String joinForm(){
-        return "buyer/join-form";
-    }
 
     //로그인
     public Buyer login(BuyerRequest.LoginDTO reqDTO) {
@@ -39,7 +35,7 @@ insert into buyer_tb(buyer_name, buyer_pw, buyer_email, created_at) values(?,?,?
 
     public Buyer findByBuyerId(Integer buyerId) {
         Query query = em.createNativeQuery("select * from buyer_tb where buyer_id = ?", Buyer.class);
-        query.setParameter(1,buyerId);
+        query.setParameter(1, buyerId);
         Buyer buyer = (Buyer) query.getSingleResult();
         return buyer;
 
