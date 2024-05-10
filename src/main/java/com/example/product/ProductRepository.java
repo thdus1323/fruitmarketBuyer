@@ -18,4 +18,10 @@ public class ProductRepository {
         return query.getResultList();
     }
 
+    //상품상세보기
+    public Product findById(Integer productId) {
+        Query query = em.createNativeQuery("select * from product_tb where product_id=?", Product.class);
+        query.setParameter(1, productId);
+        return (Product) query.getSingleResult();
+    }
 }

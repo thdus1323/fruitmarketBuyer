@@ -17,4 +17,10 @@ public class ProductService {
         return productList.stream().map(ProductResponse.ListDTO::new)
                 .collect(Collectors.toList());
     }
+
+    //상품 상세보기
+    public ProductResponse.DetailDTO getProductDetail(Integer productId) {
+        Product product = productRepository.findById(productId);
+        return new ProductResponse.DetailDTO(product);
+    }
 }
