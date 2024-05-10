@@ -2,18 +2,18 @@ package com.example.buyer;
 
 import lombok.Data;
 
-@Data
+
 public class BuyerRequest {
 
     @Data
-    public class JoinDTO {
+    public static class JoinDTO {
         private String buyerName;
         private String buyerPw;
         private String buyerEmail;
     }
 
     @Data
-    public class LoginDTO {
+    public static class LoginDTO {
         private String buyerName;
         private String buyerPw;
     }

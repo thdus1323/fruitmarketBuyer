@@ -22,7 +22,7 @@ public class BuyerController {
         return "redirect:login-form"; // 로그인 폼 구현 후 수정
     }
 
-    @GetMapping({"/join-form","/"})
+    @GetMapping({"/join-form"})
     public String joinForm(){
         return "buyer/join-form";
     }
