@@ -1,5 +1,6 @@
 package com.example.product;
 
+import com.example.purchase.Purchase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +24,5 @@ public class ProductService {
         Product product = productRepository.findById(productId);
         return new ProductResponse.DetailDTO(product);
     }
+
 }

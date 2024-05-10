@@ -36,4 +36,12 @@ insert into buyer_tb(buyer_name, buyer_pw, buyer_email, created_at) values(?,?,?
         Buyer sessionBuyer = (Buyer) query.getSingleResult();
         return sessionBuyer;
     }
+
+    public Buyer findByBuyerId(Integer buyerId) {
+        Query query = em.createNativeQuery("select * from buyer_tb where buyer_id = ?", Buyer.class);
+        query.setParameter(1,buyerId);
+        Buyer buyer = (Buyer) query.getSingleResult();
+        return buyer;
+
+    }
 }
