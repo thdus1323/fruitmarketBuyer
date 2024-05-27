@@ -12,7 +12,7 @@ import java.util.List;
 public class PurchaseRepository {
     private final EntityManager em;
 
-    //구매결정?구매하기?
+    //구매하기
     public Purchase findByProductId(Integer productId) {
         Query query = em.createNativeQuery("select * from purchase_tb where product_id=?", Purchase.class);
         query.setParameter(1, productId);
@@ -31,7 +31,7 @@ public class PurchaseRepository {
         query.setParameter(3, reqDTO.getProductId());
         query.setParameter(4, reqDTO.getProductName());
         query.setParameter(5, reqDTO.getProductPrice());
-        query.setParameter(6, reqDTO.getPurQty());
+        query.setParameter(6, reqDTO.getProductQty());
         query.setParameter(7, reqDTO.getPurQty());
 
         query.executeUpdate();

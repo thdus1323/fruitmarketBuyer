@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Integer purchaseId;
+    private Integer purId;
 
     @Column
     private Integer buyerId;

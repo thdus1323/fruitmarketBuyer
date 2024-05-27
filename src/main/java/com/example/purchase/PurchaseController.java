@@ -38,9 +38,9 @@ public class PurchaseController {
     }
 
     //구매수량 수정하기
-    @PostMapping("/purchase/{purchaseId}/update")
-    public String update(@PathVariable Integer purchaseId, PurchaseRequest.UpdateDTO reqDTO){
-        purchaseService.changePurQty(purchaseId, reqDTO);
+    @PostMapping("/purchase/{purId}/update")
+    public String update(@PathVariable Integer purId, PurchaseRequest.UpdateDTO reqDTO){
+        purchaseService.changePurQty(purId, reqDTO);
         return "redirect:/";
     }
 
