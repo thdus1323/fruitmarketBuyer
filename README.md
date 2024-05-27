@@ -37,9 +37,6 @@
     5. PurchaseResponse
     6. PurchaseService
 
-![image](https://github.com/thdus1323/fruitmarketBuyer_prac/assets/153582422/ebf0f0ec-917a-45c5-8ec3-24e754cc0ccb)
-
-
 [ 기능 ]
 
 1. 구매자 회원가입
@@ -258,11 +255,11 @@ this.productQty = product.getProductQty();
 
 2) ProductService : 레파지토리에서 요청한 해당 목록을 list 타입으로 다 가져온다.
 
-그런데 db와 java는 다른 언어로, 데이터의 형식이 다를 수 있어
+  그런데 db와 java는 다른 언어로, 데이터의 형식이 다를 수 있어
 
-db의 정보를 바로 java에서 쓸 수 없다. 그래서 db에서 가져온 정보들을 바로 가져가지
+  db의 정보를 바로 java에서 쓸 수 없다. 그래서 db에서 가져온 정보들을 바로 가져가지
 
-않고 스트림에 뿌려서 알기 쉽게 가공을 하고 다시 리스트에 담아서 그것을 응답해준다.
+  않고 스트림에 뿌려서 알기 쉽게 가공을 하고 다시 리스트에 담아서 그것을 응답해준다.
 
 ```java
  public List<ProductResponse.ListDTO> getProductList(){
@@ -331,7 +328,7 @@ return "product/list";
     }
 ```
 
-2) PurchaseService : 구매자pk와 업데이트 디티오를 요청을 하고, 레파지토리에 요청을 한다.-v
+2) PurchaseService : 구매자 id(pk)와 업데이트 디티오을 이용하여 로그인한 사람의 신분, 바꾸려는 수량정보를 디티오에 넣으면, 레파지토리의 메서드를 호출하여 로직을 처리한다
 
 ```java
    @Transactional
