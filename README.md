@@ -37,7 +37,8 @@
     5. PurchaseResponse
     6. PurchaseService
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/fadaf8f9-4b09-4f3d-9e72-038ace21b86b/373e3dd3-6f32-4542-a073-a1011d4039c9/Untitled.png)
+![image](https://github.com/thdus1323/fruitmarketBuyer_prac/assets/153582422/ebf0f0ec-917a-45c5-8ec3-24e754cc0ccb)
+
 
 [ 기능 ]
 
@@ -77,7 +78,7 @@ public void join(BuyerRequest.JoinDTO reqDTO) {
 
 ---
 
-4) BuyerService : 클래스에 정의된 join 메서드를 호출하여 회원가입 정보를 데이터베이스에 저장합니다. 이 메서드는 reqDTO 객체를 매개변수로 받아 사용자의 이름, 비밀번호, 이메일 정보를 데이터베이스에 저장합니다.
+4) BuyerService : repository의 조인 메서드를 호출하여 회원정보를 dto에 담아 저장.
 
 ```java
 //회원가입
@@ -88,12 +89,6 @@ buyerRepository.join(reqDTO);
 ```
 
 ---
-
-+) db에 저장하는 것은 레파지토리가 하는 것. 서비스는 db를 통해 db와 일처리
-
-일반적으로 서비스 계층은 직접적으로 데이터베이스와 상호작용하지 않습니다. 대신, 서비스 계층은 리포지토리 계층을 통해 데이터베이스 작업을 처리합니다. 서비스 계층의 주요 역할은 비즈니스 로직을 처리하고, 리포지토리 계층을 사용하여 데이터 저장 및 검색 작업을 수행하는 것입니다.
-
-앞서 제시한 코드에서 서비스 계층이 데이터베이스에 저장하는 것처럼 보이는 이유는 서비스 계층이 리포지토리 계층을 통해 데이터를 저장하도록 호출하기 때문입니다. 아래에 좀 더 명확한 예시를 제공하겠습니다:
 
 5) BuyerController : 회원가입 뷰로 가능 기능, reqDTO를 통해 join 정보 가져오기
 
@@ -143,14 +138,11 @@ public String join(BuyerRequest.JoinDTO reqDTO) {
 
 ---
 
-- 해당 HTML 폼은 사용자가 "회원가입" 버튼을 누르면 /join URL로 HTTP POST 요청을 보내고, 폼에 입력된 buyerName, buyerPw, buyerEmail 값을 서버로 전송합니다. 서버는 이 요청을 받아서 처리하게 됩니다.(from gpt)
-
 2.구매자 로그인/로그아웃
 
 1) 로그인
 
 (1) BuyerRepository : 로그인에 필요한 정보(이름, 패스워드)를 DTO에 담아 요청하고
-
 그것을 db에서 가져옴.
 
 ```java
@@ -162,8 +154,6 @@ public Buyer login(BuyerRequest.LoginDTO reqDTO) {
 		query.setParameter(1, reqDTO.getBuyerName());
 		query.setParameter(2, reqDTO.getBuyerPw());
 		Buyer sessionBuyer = (Buyer) query.getSingleResult();
-// 데이터베이스랑 자바 세상은 다르니까 데이터베이스의 자료를 자바로 가져와야 하니까 형변환
-		
 		return sessionBuyer;
 }
 ```
@@ -266,13 +256,13 @@ this.productQty = product.getProductQty();
 
 ---
 
-2) ProductService : 요청한 해당 목록을 가져오는 건데, 레파지토리에서 해당 목록을
+2) ProductService : 레파지토리에서 요청한 해당 목록을 list 타입으로 다 가져온다.
 
-list 타입으로 다 가져온다. 그런데 db와 java는 다른 언어로, 데이터의 형식이 다를 수 있어
+그런데 db와 java는 다른 언어로, 데이터의 형식이 다를 수 있어
 
 db의 정보를 바로 java에서 쓸 수 없다. 그래서 db에서 가져온 정보들을 바로 가져가지
 
-않고 스트림에 뿌려서 알기 쉽게 가공을 하고 다시 리스트에 담아서 그것을 응답해줌.
+않고 스트림에 뿌려서 알기 쉽게 가공을 하고 다시 리스트에 담아서 그것을 응답해준다.
 
 ```java
  public List<ProductResponse.ListDTO> getProductList(){
@@ -281,48 +271,6 @@ db의 정보를 바로 java에서 쓸 수 없다. 그래서 db에서 가져온 �
                 .collect(Collectors.toList());
     }
 ```
-
-+) gpt 도움_ReadMe에서는 삭제-v(혹은 람다버전 수정, 사용해라.)
-
-```java
-일반적으로 데이터베이스에서 가져온 데이터는 
-애플리케이션에서 사용되는 데이터 형식과 다를 수 있습니다. 
-이러한 경우, 데이터를 가져와서 원하는 형식으로 변환하여 사용해야 합니다. 
-스트림을 사용하여 데이터를 가져와 변환하는 것은 
-이러한 작업을 효율적으로 처리하기 위한 방법 중 하나입니다.
-
-여기서는 데이터베이스에서 가져온 Product 객체를 
-ProductResponse.ListDTO로 변환하여 반환해야합니다. 
-이 변환 작업은 데이터의 형식을 맞추는 역할을 합니다. 
-데이터베이스의 스키마가 애플리케이션의 데이터 구조와 다르기 때문에 
-이러한 변환이 필요합니다.
-```
-
-```java
-
-ProductResponse.ListDTO::new는 Java 8에서 도입된 메서드 레퍼런스(Method Reference)입니다.
-이것은 람다 표현식을 간결하게 표현하기 위한 것입니다.
-
-ProductResponse.ListDTO::new는 ProductResponse.ListDTO 클래스의 생성자를 참조합니다. 
-이것은 각 Product 객체를 ProductResponse.ListDTO로 매핑하기 위한 방법을 제공합니다.
-
-기존에는 람다 표현식으로 다음과 같이 작성할 수 있었습니다:
-
-java))코드 복사
-return productList.stream()
-        .map(product -> new ProductResponse.ListDTO(product))
-        .collect(Collectors.toList());
--------------------------------------------------------------
-하지만 메서드 레퍼런스를 사용하면 이것을 더 간결하게 표현할 수 있습니다. 
-이 문법은 람다 표현식에서 메서드 호출을 대체하는 것으로,
-:: 뒤에는 메서드의 이름이 오고, 이는 해당 클래스나 인터페이스의 정적 메서드이거나 
-인스턴스 메서드일 수 있습니다. 여기서는 생성자를 호출하기 때문에 new 키워드를 사용합니다.
-
-따라서 ProductResponse.ListDTO::new는 ProductResponse.ListDTO 클래스의 생성자를 
-참조하는 메서드 레퍼런스입니다.
-```
-
----
 
 3) ProductController : 문자열 리스트로 반환하는 메서드에 목록 요청이 들어오면,
 
@@ -350,39 +298,6 @@ return "product/list";
         request.setAttribute("product",product);
         return "product/detail";
     }
-```
-
-+) gpt 도움_ReadMe에서는 삭제-v
-
-```java
-@PathVariable은 웹 주소의 일부를 변수로 사용할 때 쓰는 거예요. 
-예를 들어, /product/1/detail 이 주소에서 1은 제품 번호를 나타냅니다. 
-이걸 받아와서 코드에서 사용하려면 @PathVariable을 씁니다. 
-그럼 제품 번호가 메서드 안으로 자동으로 들어와서 처리할 수 있어요!
-```
-
-```java
-
-request.setAttribute("product", product);
-은 서버에서 클라이언트로 데이터를 전달하는 데 사용됩니다. 
-이 코드는 HttpServletRequest 객체에 product라는 이름으로 product 변수를 설정합니다. 
-이렇게 하면 해당 정보가 현재 요청과 관련된 다른 부분에서 사용할 수 있습니다.
-
-예를 들어, 이 정보는 HTML 페이지에서 제품 세부 정보를 표시하는 데 사용될 수 있습니다. 
-뷰 템플릿에서 ${product}와 같은 방식으로 이 정보에 접근하여 
-제품의 세부 정보를 출력할 수 있습니다.
-
-즉, 이 코드는 제품의 세부 정보를 서버에서 클라이언트로 전달하고, 
-클라이언트의 다른 부분에서 이 정보를 사용할 수 있도록 합니다.
-
-질문) 그러면 이 부분은 그냥 여러 곳에서 사용할 수 있게 쉽게 명명하는 작업이야?
-
-ChatGPT 답) 
-네, 맞아요! request.setAttribute("product", product);은 제품 정보를 "product"라는 이름으로
- 저장하는 작업이에요. 이렇게 하면 이 정보를 여러 곳에서 쉽게 사용할 수 있어요. 
- 예를 들어, 웹 페이지에서 제품 정보를 보여주거나, 
- 다른 서비스나 모듈에서 이 정보를 활용할 때 유용합니다. 
- 이름을 "product"로 명명함으로써, 다른 부분에서 이 정보를 찾고 사용하기가 편리해집니다.
 ```
 
 2) ProductService : 상품아이디로 상세보기를 dto에 담아올거다. 레파지토리에서 정보를 가져올 거다. 그래서 새로운 detaildto로 응답을 받을 거다.
@@ -523,7 +438,7 @@ public void updateQty(PurchaseRequest.SaveDTO reqDTO){
 
 구매 id(pk)와 구매요청을 하면 문자열로 업데이트가 된다. 
 
-자세하게는 서비스에 수량변경요청이 가고 요청 후에는 메인으로 반환 된다.
+자세하게는 서비스에 수량변경요청이 가고 요청 후에는 메인으로 반환된다.
 
 ```java
 @PostMapping("/purchase/{purId}/update")
